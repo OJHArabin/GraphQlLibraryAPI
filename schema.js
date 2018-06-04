@@ -15,7 +15,7 @@ const Book=require('./model/Book')
 // {id:'3',title:'C How To Program',author:'ojha',releaseDate:'2014',summary:'C'}
 // ];
 
-//customer type
+//book type
 const BookType=new GraphQLObjectType({
      name:'Book',
      fields:()=>({
@@ -33,25 +33,23 @@ const RootQuery=new GraphQLObjectType({
   name:'RootQueryType',
   fields:{
     book:{
-      type:BookType,
-      args:{
-        id:{type:GraphQLString}
-      },
-      resolve(parent, args){
-        // for(let i=0;i<book.length;i++){
-        //   if(book[i].id==args.id){
-        //     return book[i];
-        //   }}
-
-        return Book.findById(args.id);
-
+       type:BookType,
+       args:{id:{type:GraphQLString}},
+       resolve(parent,args){
+       return Book.findById(args.id);
       }
     },
-    book:{
+    bookAll:{
       type:new GraphQLList(BookType),
       resolve(parentValue, args){
-        //return book;
-        return Book.find({});
+      return Book.find({});
+      }
+    },
+    bookAvaliablity:{
+       type:new GraphQLList(BookType),
+       args:{isAvaliable:{type:GraphQLBoolean}},
+       resolve(parent,args){
+       return Book.find(args);
       }
     }
   }
@@ -105,7 +103,6 @@ const Mutation= new GraphQLObjectType({
             },
         resolve(parent, args){
            return Book.findByIdAndUpdate(args.id,args)
-      
           }
      },
      //Return

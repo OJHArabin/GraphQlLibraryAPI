@@ -17,7 +17,7 @@ mongoose.connection
 
 
 app.use('/graphql',graphqlHttp({
-schema:schema,
+schema,
 graphiql: true
 }));
 
